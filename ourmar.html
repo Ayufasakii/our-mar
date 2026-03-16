@@ -1,0 +1,1220 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ถึงน้อง 🎞️</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Sriracha&family=Sarabun:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #f5ede0;
+    --warm-white: #fdf6ec;
+    --brown-dark: #3d2b1f;
+    --brown-mid: #7a5c4a;
+    --brown-light: #b89880;
+    --amber: #c17f3e;
+    --dusty-rose: #d4a59a;
+    --sage: #9aaa8e;
+    --paper: #f0e4d0;
+    --tape: rgba(194, 160, 100, 0.45);
+    --shadow: rgba(61, 43, 31, 0.18);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background-color: var(--cream);
+    color: var(--brown-dark);
+    font-family: 'Sarabun', sans-serif;
+    overflow-x: hidden;
+    cursor: default;
+  }
+
+  /* grain overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.5;
+  }
+
+  /* ========= HERO ========= */
+  #hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+    position: relative;
+    background: radial-gradient(ellipse at 60% 40%, #e8d5bc 0%, var(--cream) 60%);
+  }
+
+  .hero-badge {
+    font-family: 'Sriracha', cursive;
+    font-size: 0.9rem;
+    color: var(--brown-light);
+    letter-spacing: 0.2em;
+    margin-bottom: 1.2rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 0.3s;
+  }
+
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3rem, 10vw, 7rem);
+    font-weight: 700;
+    line-height: 1.05;
+    color: var(--brown-dark);
+    opacity: 0;
+    animation: fadeUp 1s ease forwards 0.5s;
+  }
+
+  .hero-title em {
+    font-style: italic;
+    color: var(--amber);
+  }
+
+  .hero-sub {
+    font-family: 'Sriracha', cursive;
+    font-size: 1.1rem;
+    color: var(--brown-mid);
+    margin-top: 1.2rem;
+    opacity: 0;
+    animation: fadeUp 1s ease forwards 0.8s;
+  }
+
+  .hero-scroll {
+    margin-top: 3.5rem;
+    font-size: 0.8rem;
+    color: var(--brown-light);
+    letter-spacing: 0.15em;
+    opacity: 0;
+    animation: fadeUp 1s ease forwards 1.2s;
+  }
+
+  .scroll-line {
+    width: 1px;
+    height: 60px;
+    background: linear-gradient(to bottom, var(--brown-light), transparent);
+    margin: 0.8rem auto 0;
+    animation: grow 1.5s ease infinite 1.5s;
+    transform-origin: top;
+  }
+
+  .film-strip {
+    position: absolute;
+    top: 0; left: -12px;
+    width: 28px;
+    height: 100%;
+    background: var(--brown-dark);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+    padding: 18px 0;
+    opacity: 0.12;
+  }
+
+  .film-hole {
+    width: 10px; height: 10px;
+    border-radius: 2px;
+    background: var(--cream);
+    flex-shrink: 0;
+  }
+
+  /* ========= SECTIONS ========= */
+  .section {
+    min-height: 100vh;
+    padding: 6rem 2rem;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .section-label {
+    font-family: 'Sriracha', cursive;
+    font-size: 0.85rem;
+    letter-spacing: 0.25em;
+    color: var(--brown-light);
+    margin-bottom: 0.6rem;
+    text-transform: uppercase;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 6vw, 3.5rem);
+    font-weight: 700;
+    color: var(--brown-dark);
+    margin-bottom: 3rem;
+    text-align: center;
+  }
+
+  /* ========= POLAROIDS ========= */
+  #love {
+    background: var(--warm-white);
+  }
+
+  .polaroids-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2.5rem;
+    max-width: 900px;
+    width: 100%;
+  }
+
+  .polaroid {
+    background: white;
+    padding: 14px 14px 40px;
+    box-shadow: 3px 4px 18px var(--shadow);
+    position: relative;
+    opacity: 0;
+    transform: translateY(30px) rotate(var(--rot));
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .polaroid:nth-child(1) { --rot: -2.5deg; transition-delay: 0.1s; }
+  .polaroid:nth-child(2) { --rot: 1.8deg; transition-delay: 0.2s; }
+  .polaroid:nth-child(3) { --rot: -1.2deg; transition-delay: 0.3s; }
+  .polaroid:nth-child(4) { --rot: 2.1deg; transition-delay: 0.4s; }
+  .polaroid:nth-child(5) { --rot: -3deg; transition-delay: 0.5s; }
+  .polaroid:nth-child(6) { --rot: 1.5deg; transition-delay: 0.6s; }
+
+  .polaroid.visible {
+    opacity: 1;
+    transform: translateY(0) rotate(var(--rot));
+  }
+
+  .polaroid:hover {
+    transform: translateY(-6px) rotate(0deg) scale(1.03);
+    box-shadow: 6px 10px 30px var(--shadow);
+    z-index: 10;
+  }
+
+  /* tape strip */
+  .polaroid::before {
+    content: '';
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%) rotate(-1deg);
+    width: 60px; height: 22px;
+    background: var(--tape);
+    z-index: 2;
+  }
+
+  .polaroid-img {
+    width: 100%;
+    aspect-ratio: 1;
+    background: linear-gradient(135deg, var(--paper) 0%, #e8d8c4 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.8rem;
+    color: var(--brown-light);
+    overflow: hidden;
+  }
+
+  /* film grain on polaroid */
+  .polaroid-img::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url("data:image/svg+xml,%3Csvg viewBox='0 0 150 150' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+    pointer-events: none;
+    mix-blend-mode: multiply;
+  }
+
+  .polaroid-caption {
+    font-family: 'Sriracha', cursive;
+    font-size: 0.85rem;
+    color: var(--brown-mid);
+    text-align: center;
+    margin-top: 10px;
+    line-height: 1.5;
+    padding: 0 4px;
+  }
+
+  /* ========= SORRY ========= */
+  #sorry {
+    background: linear-gradient(160deg, #ede0d0 0%, var(--warm-white) 100%);
+  }
+
+  .sorry-letter {
+    max-width: 680px;
+    width: 100%;
+    background: var(--paper);
+    padding: 3rem 3.5rem;
+    box-shadow: 4px 6px 24px var(--shadow);
+    position: relative;
+    transform: rotate(-0.4deg);
+    opacity: 0;
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+
+  .sorry-letter.visible {
+    opacity: 1;
+    transform: rotate(-0.4deg);
+  }
+
+  /* paper lines */
+  .sorry-letter::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: repeating-linear-gradient(
+      transparent, transparent 31px, rgba(184,152,128,0.18) 31px, rgba(184,152,128,0.18) 32px
+    );
+    background-position: 0 3.2rem;
+    pointer-events: none;
+  }
+
+  .sorry-letter-title {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.6rem;
+    color: var(--amber);
+    margin-bottom: 1.8rem;
+  }
+
+  .sorry-item {
+    display: flex;
+    gap: 0.8rem;
+    margin-bottom: 1.2rem;
+    align-items: flex-start;
+    position: relative;
+    z-index: 1;
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+
+  .sorry-item.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .sorry-bullet {
+    font-size: 1rem;
+    color: var(--dusty-rose);
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .sorry-text {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: var(--brown-dark);
+  }
+
+  /* ========= MEMORIES ========= */
+  #memories {
+    background: var(--cream);
+  }
+
+  .memories-tape {
+    max-width: 780px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 2.2rem;
+  }
+
+  .memory-card {
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-start;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .memory-card.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .memory-card:nth-child(even) {
+    flex-direction: row-reverse;
+  }
+
+  .memory-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: var(--brown-light);
+    opacity: 0.35;
+    line-height: 1;
+    flex-shrink: 0;
+    width: 60px;
+    text-align: center;
+  }
+
+  .memory-content {
+    background: white;
+    padding: 1.2rem 1.5rem;
+    box-shadow: 2px 3px 12px var(--shadow);
+    border-left: 3px solid var(--amber);
+    flex: 1;
+  }
+
+  .memory-content:hover {
+    transform: scale(1.02);
+    transition: transform 0.2s ease;
+  }
+
+  .memory-emoji {
+    font-size: 1.4rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .memory-text {
+    font-size: 1rem;
+    line-height: 1.75;
+    color: var(--brown-dark);
+  }
+
+  /* ========= FUTURE ========= */
+  #future {
+    background: linear-gradient(180deg, var(--warm-white) 0%, #e8ddd0 100%);
+  }
+
+  .wishlist {
+    max-width: 600px;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.2rem;
+  }
+
+  @media (max-width: 500px) {
+    .wishlist { grid-template-columns: 1fr; }
+  }
+
+  .wish-item {
+    background: white;
+    border: 1.5px solid var(--paper);
+    padding: 1rem 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    box-shadow: 2px 2px 8px var(--shadow);
+    cursor: pointer;
+    transition: all 0.25s ease;
+    opacity: 0;
+    transform: scale(0.9);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .wish-item::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--amber);
+    opacity: 0;
+    transition: opacity 0.25s ease;
+  }
+
+  .wish-item.checked::after { opacity: 0.08; }
+
+  .wish-item.visible {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .wish-check {
+    width: 20px; height: 20px;
+    border: 2px solid var(--brown-light);
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 0.85rem;
+    transition: all 0.2s ease;
+    position: relative;
+    z-index: 1;
+  }
+
+  .wish-item.checked .wish-check {
+    background: var(--amber);
+    border-color: var(--amber);
+    color: white;
+  }
+
+  .wish-label {
+    font-family: 'Sriracha', cursive;
+    font-size: 0.9rem;
+    color: var(--brown-dark);
+    line-height: 1.4;
+    position: relative;
+    z-index: 1;
+  }
+
+  .wish-emoji {
+    font-size: 1.1rem;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ========= LETTER ========= */
+  #letter {
+    background: var(--brown-dark);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 6rem 2rem;
+  }
+
+  #letter .section-label { color: var(--brown-light); }
+
+  #letter .section-title {
+    color: var(--cream);
+  }
+
+  .envelope-wrapper {
+    max-width: 640px;
+    width: 100%;
+    position: relative;
+  }
+
+  .envelope {
+    background: var(--paper);
+    padding: 3rem 3.5rem 2.5rem;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    position: relative;
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.9s ease, transform 0.9s ease;
+  }
+
+  .envelope.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* wax seal deco */
+  .wax-seal {
+    position: absolute;
+    top: -18px;
+    right: 2.5rem;
+    width: 44px; height: 44px;
+    background: var(--amber);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    box-shadow: 2px 3px 10px rgba(0,0,0,0.25);
+  }
+
+  .letter-salutation {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.3rem;
+    color: var(--amber);
+    margin-bottom: 1.5rem;
+  }
+
+  .letter-body {
+    font-size: 1rem;
+    line-height: 2;
+    color: var(--brown-dark);
+    white-space: pre-line;
+  }
+
+  .letter-sign {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.1rem;
+    color: var(--brown-mid);
+    margin-top: 2rem;
+    text-align: right;
+  }
+
+  /* ========= FOOTER ========= */
+  footer {
+    background: var(--brown-dark);
+    padding: 2rem;
+    text-align: center;
+    border-top: 1px solid rgba(255,255,255,0.05);
+  }
+
+  footer p {
+    font-family: 'Sriracha', cursive;
+    color: var(--brown-light);
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+  }
+
+  /* ========= NAV DOTS ========= */
+  .nav-dots {
+    position: fixed;
+    right: 1.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 100;
+  }
+
+  .nav-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--brown-light);
+    opacity: 0.3;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+  }
+
+  .nav-dot.active {
+    opacity: 1;
+    background: var(--amber);
+    transform: scale(1.4);
+  }
+
+  /* ========= ANIMATIONS ========= */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes grow {
+    0%, 100% { transform: scaleY(1); opacity: 1; }
+    50% { transform: scaleY(0.6); opacity: 0.5; }
+  }
+
+  /* section divider */
+  .divider {
+    width: 60px;
+    height: 2px;
+    background: linear-gradient(to right, transparent, var(--amber), transparent);
+    margin: 0 auto 2.5rem;
+  }
+
+  @media (max-width: 600px) {
+    .polaroids-grid { grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+    .sorry-letter { padding: 2rem 1.8rem; }
+    .envelope { padding: 2rem 1.8rem 2rem; }
+    .memory-card:nth-child(even) { flex-direction: row; }
+  }
+
+  /* ========= STATS RECAP ========= */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.2rem;
+    max-width: 640px;
+    width: 100%;
+  }
+
+  @media (max-width: 480px) {
+    .stats-grid { grid-template-columns: 1fr 1fr; gap: 0.9rem; }
+  }
+
+  .stat-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(184,152,128,0.2);
+    padding: 1.6rem 1.4rem;
+    position: relative;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease var(--delay), transform 0.6s ease var(--delay);
+  }
+
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(193,127,62,0.08) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .stat-card.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .stat-card:hover {
+    border-color: rgba(193,127,62,0.5);
+    background: rgba(255,255,255,0.07);
+    transition: border-color 0.2s ease, background 0.2s ease;
+  }
+
+  .stat-number {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.2rem, 7vw, 3.2rem);
+    font-weight: 700;
+    color: var(--amber);
+    line-height: 1;
+    margin-bottom: 0.5rem;
+  }
+
+  .stat-unit {
+    font-family: 'Sriracha', cursive;
+    font-size: 0.75rem;
+    color: var(--brown-light);
+    margin-left: 4px;
+    vertical-align: middle;
+    letter-spacing: 0.05em;
+  }
+
+  .stat-label {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem;
+    color: var(--cream);
+    margin-bottom: 0.3rem;
+  }
+
+  .stat-sub {
+    font-family: 'Sriracha', cursive;
+    font-size: 0.75rem;
+    color: var(--brown-light);
+    opacity: 0.7;
+  }
+
+  .propose-btns {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .yes-btn {
+    background: var(--amber);
+    color: white;
+    border: none;
+    padding: 0.9rem 2.5rem;
+    font-family: 'Sriracha', cursive;
+    font-size: 1.1rem;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: transform 0.2s ease, background 0.2s ease;
+    box-shadow: 0 4px 20px rgba(193,127,62,0.3);
+  }
+
+  .yes-btn:hover { transform: scale(1.06); background: #a86c30; }
+
+  .no-btn {
+    background: transparent;
+    color: var(--brown-light);
+    border: 1px solid var(--brown-mid);
+    padding: 0.9rem 2rem;
+    font-family: 'Sriracha', cursive;
+    font-size: 1.1rem;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.15s ease;
+    position: relative;
+  }
+  #password-screen {
+    position: fixed;
+    inset: 0;
+    background: var(--brown-dark);
+    z-index: 99999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    padding: 2rem;
+    transition: opacity 0.7s ease, visibility 0.7s ease;
+  }
+
+  #password-screen.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  .pw-film {
+    font-size: 2rem;
+    letter-spacing: 0.3em;
+    animation: fadeUp 0.8s ease forwards;
+  }
+
+  .pw-title {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: clamp(1.5rem, 5vw, 2.2rem);
+    color: var(--cream);
+    text-align: center;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 0.2s;
+  }
+
+  .pw-hint {
+    font-family: 'Sriracha', cursive;
+    font-size: 0.85rem;
+    color: var(--brown-light);
+    letter-spacing: 0.1em;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 0.4s;
+  }
+
+  .pw-input-wrap {
+    display: flex;
+    gap: 0.6rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 0.5s;
+  }
+
+  .pw-input {
+    background: rgba(255,255,255,0.07);
+    border: 1.5px solid var(--brown-mid);
+    color: var(--cream);
+    font-family: 'Sriracha', cursive;
+    font-size: 1.2rem;
+    letter-spacing: 0.25em;
+    padding: 0.7rem 1.2rem;
+    width: 160px;
+    text-align: center;
+    outline: none;
+    transition: border-color 0.3s ease;
+    border-radius: 2px;
+  }
+
+  .pw-input:focus {
+    border-color: var(--amber);
+  }
+
+  .pw-input.error {
+    border-color: #e07070;
+    animation: shake 0.4s ease;
+  }
+
+  .pw-btn {
+    background: var(--amber);
+    color: white;
+    border: none;
+    padding: 0.7rem 1.4rem;
+    font-family: 'Sriracha', cursive;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.15s ease;
+    border-radius: 2px;
+  }
+
+  .pw-btn:hover { background: #a86c30; transform: scale(1.04); }
+
+  .pw-error {
+    font-family: 'Sriracha', cursive;
+    font-size: 0.85rem;
+    color: #e07070;
+    min-height: 1.2rem;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .pw-error.show { opacity: 1; }
+
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-6px); }
+    75% { transform: translateX(6px); }
+  }
+</style>
+</head>
+<body>
+
+<!-- PASSWORD SCREEN -->
+<div id="password-screen">
+  <div class="pw-film">🎞️</div>
+  <h2 class="pw-title">สิ่งสำคัญในวันสำคัญสำหรับคนสำคัญ</h2>
+  <p class="pw-hint">ใส่รหัสเพื่อเปิด</p>
+  <div class="pw-input-wrap">
+    <input class="pw-input" id="pw-input" type="password" maxlength="10" placeholder="······" onkeydown="if(event.key==='Enter') checkPw()" autocomplete="off" />
+    <button class="pw-btn" onclick="checkPw()">เปิด ✦</button>
+  </div>
+  <p class="pw-error" id="pw-error">รหัสไม่ถูกต้อง ลองใหม่นะ 🥺</p>
+</div>
+
+<!-- Film strip left -->
+<div class="film-strip" aria-hidden="true">
+  <div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div>
+  <div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div>
+  <div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div>
+  <div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div>
+  <div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div>
+  <div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div>
+  <div class="film-hole"></div><div class="film-hole"></div>
+</div>
+
+<!-- Nav dots -->
+<nav class="nav-dots" aria-label="navigation">
+  <button class="nav-dot active" onclick="scrollTo('#hero')" title="หน้าแรก"></button>
+  <button class="nav-dot" onclick="scrollTo('#love')" title="สิ่งที่ชอบ"></button>
+  <button class="nav-dot" onclick="scrollTo('#sorry')" title="ขอโทษ"></button>
+  <button class="nav-dot" onclick="scrollTo('#memories')" title="ความทรงจำ"></button>
+  <button class="nav-dot" onclick="scrollTo('#future')" title="อนาคต"></button>
+  <button class="nav-dot" onclick="scrollTo('#letter')" title="จดหมาย"></button>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <p class="hero-badge">🎞️ &nbsp; 2 months &nbsp; 🎞️</p>
+  <h1 class="hero-title">ถึง<em>น้องกิ๊ฟ</em><br>จากอัด</h1>
+  <p class="hero-sub">ครบ 2 เดือนแล้วนะ เดือนนี้มันยากแต่เราก็ยังอยู่ด้วยกันอยู่ 🤎</p>
+  <div class="hero-scroll">
+    <span>เลื่อนลงมาเลย</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- STATS RECAP -->
+<section id="stats" class="section" style="background: #1a0f0a; min-height: auto; padding: 5rem 2rem;">
+  <p class="section-label" style="color: #b89880;">your year in — เดือนที่ 2</p>
+  <h2 class="section-title" style="color: #f5ede0;">Wrapped 🎧</h2>
+  <div class="divider"></div>
+  <div class="stats-grid">
+    <div class="stat-card" style="--delay: 0.1s">
+      <div class="stat-number">61<span class="stat-unit">Sec/Min</span></div>
+      <div class="stat-label">รัก</div>
+      <div class="stat-sub">ทุกวินาทีที่ผ่านไป</div>
+    </div>
+    <div class="stat-card" style="--delay: 0.25s">
+      <div class="stat-number">61<span class="stat-unit">Min/Hr</span></div>
+      <div class="stat-label">เป็นห่วง</div>
+      <div class="stat-sub">ทุกนาทีในทุกชั่วโมง</div>
+    </div>
+    <div class="stat-card" style="--delay: 0.4s">
+      <div class="stat-number">25<span class="stat-unit">Hr/Day</span></div>
+      <div class="stat-label">คิดถึง</div>
+      <div class="stat-sub">ทุกชั่วโมง ทุกวัน</div>
+    </div>
+    <div class="stat-card" style="--delay: 0.55s">
+      <div class="stat-number">32<span class="stat-unit">Day/Month</span></div>
+      <div class="stat-label">อยากมีเธอในชีวิต</div>
+      <div class="stat-sub">ทุกวันในทุกเดือน</div>
+    </div>
+  </div>
+</section>
+
+<!-- LOVE -->
+<section id="love" class="section">
+  <p class="section-label">01 — สิ่งที่ชอบ</p>
+  <h2 class="section-title">ที่ชอบในตัวน้อง</h2>
+  <div class="divider"></div>
+  <div class="polaroids-grid">
+    <div class="polaroid">
+      <div class="polaroid-img">🔥</div>
+      <p class="polaroid-caption">ชอบที่น้องมีไฟ เวลาพูดเรื่องที่ชอบหรือความฝันดูสดใสมากเลย</p>
+    </div>
+    <div class="polaroid">
+      <div class="polaroid-img">💬</div>
+      <p class="polaroid-caption">โกดคือโกด งอนคืองอน ชอบที่พูดตรงๆ แบบนี้จริงๆ</p>
+    </div>
+    <div class="polaroid">
+      <div class="polaroid-img">🌿</div>
+      <p class="polaroid-caption">ทุกครั้งที่ได้อยู่ด้วยกันรู้สึกอบอุ่นมาก</p>
+    </div>
+    <div class="polaroid">
+      <div class="polaroid-img">🫶</div>
+      <p class="polaroid-caption">น้องใส่ใจอัดมากนะ รู้สึกได้เลยว่าไม่อยากให้อัดเสียใจ</p>
+    </div>
+    <div class="polaroid">
+      <div class="polaroid-img">🐣</div>
+      <p class="polaroid-caption">บางมุมก็ขี้อ้อน แต่บางมุมก็ทำให้อัดอยากไปอ้อนด้วย</p>
+    </div>
+    <div class="polaroid">
+      <div class="polaroid-img">🤎</div>
+      <p class="polaroid-caption">ใดๆ เลย สิ่งที่ชอบมากที่สุดก็คือน้อง</p>
+    </div>
+  </div>
+</section>
+
+<!-- SORRY -->
+<section id="sorry" class="section">
+  <p class="section-label">02 — ขอโทษ</p>
+  <h2 class="section-title">จากใจ</h2>
+  <div class="divider"></div>
+  <div class="sorry-letter">
+    <h3 class="sorry-letter-title">น้อง...</h3>
+    <div class="sorry-item">
+      <span class="sorry-bullet">✦</span>
+      <p class="sorry-text">ขอโทษที่กดดันมากเกินไป รู้ว่ามันอึดอัด</p>
+    </div>
+    <div class="sorry-item">
+      <span class="sorry-bullet">✦</span>
+      <p class="sorry-text">ขอโทษที่ชอบตึงใส่ ประชดใส่ พูดจาไม่ดีหลายครั้ง</p>
+    </div>
+    <div class="sorry-item">
+      <span class="sorry-bullet">✦</span>
+      <p class="sorry-text">ขอโทษที่ดราม่าเยอะ ทั้งที่รู้ว่าน้องมีเรื่องต้องโฟกัสอยู่</p>
+    </div>
+    <div class="sorry-item">
+      <span class="sorry-bullet">✦</span>
+      <p class="sorry-text">ขอโทษที่ไม่เคารพเวลาและชีวิตของน้อง</p>
+    </div>
+    <div class="sorry-item">
+      <span class="sorry-bullet">✦</span>
+      <p class="sorry-text">ขอโทษที่มีอะไรไม่พูดตรงๆ แล้วมาระเบิดใส่ทีหลัง</p>
+    </div>
+  </div>
+</section>
+
+<!-- MEMORIES -->
+<section id="memories" class="section">
+  <p class="section-label">03 — ความทรงจำ</p>
+  <h2 class="section-title">ยังนึกถึงอยู่เสมอ</h2>
+  <div class="divider"></div>
+  <div class="memories-tape">
+    <div class="memory-card">
+      <div class="memory-number">01</div>
+      <div class="memory-content">
+        <div class="memory-emoji">🛕</div>
+        <p class="memory-text">ได้ไปวัดด้วยกัน ถึงจะป้ำๆ เป๋อๆ แต่มีความสุขมากเลย</p>
+      </div>
+    </div>
+    <div class="memory-card">
+      <div class="memory-number">02</div>
+      <div class="memory-content">
+        <div class="memory-emoji">☕</div>
+        <p class="memory-text">ได้กลับมาสามย่านด้วยกันอีกรอบ นึกถึงวันที่เดทกันแรกๆ ชอบที่ได้นั่งคุยกันหลายเรื่องที่นั่น</p>
+      </div>
+    </div>
+    <div class="memory-card">
+      <div class="memory-number">03</div>
+      <div class="memory-content">
+        <div class="memory-emoji">😊</div>
+        <p class="memory-text">เวลาไม่ได้เจอกันนานๆ แล้วได้กลับมาเจอ เก็บทรงแทบไม่อยู่ ยิ้มแก้มจะปริ</p>
+      </div>
+    </div>
+    <div class="memory-card">
+      <div class="memory-number">04</div>
+      <div class="memory-content">
+        <div class="memory-emoji">🤝</div>
+        <p class="memory-text">ชอบเวลาได้เดินจับมือกัน ทุกครั้งที่อยู่ด้วยกันอยากให้เวลาหยุดตรงนั้นเลย</p>
+      </div>
+    </div>
+    <div class="memory-card">
+      <div class="memory-number">05</div>
+      <div class="memory-content">
+        <div class="memory-emoji">🚗</div>
+        <p class="memory-text">ชอบที่ได้ไปส่งน้องตลอด ติดไฟแดงพระขโนงก็ไม่น่าเบื่อแล้ว เพราะได้คุยกันระหว่างทาง</p>
+      </div>
+    </div>
+    <div class="memory-card">
+      <div class="memory-number">06</div>
+      <div class="memory-content">
+        <div class="memory-emoji">📞</div>
+        <p class="memory-text">ชอบที่น้องหาเวลามาให้ในตอนที่ว่าง โทรมาหาหรือให้ไปเจอกัน</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FUTURE -->
+<section id="future" class="section">
+  <p class="section-label">04 — อนาคต</p>
+  <h2 class="section-title">อยากทำด้วยกัน</h2>
+  <div class="divider"></div>
+  <div class="wishlist">
+    <div class="wish-item" onclick="toggleWish(this)">
+      <div class="wish-check"></div>
+      <span class="wish-emoji">🌏</span>
+      <span class="wish-label">ไปเที่ยวด้วยกัน</span>
+    </div>
+    <div class="wish-item" onclick="toggleWish(this)">
+      <div class="wish-check"></div>
+      <span class="wish-emoji">🫂</span>
+      <span class="wish-label">นอนกอดกันให้มากกว่านี้</span>
+    </div>
+    <div class="wish-item" onclick="toggleWish(this)">
+      <div class="wish-check"></div>
+      <span class="wish-emoji">🍜</span>
+      <span class="wish-label">ไปร้านคาเฟ่กินหนมถ่ายรูป</span>
+    </div>
+    <div class="wish-item" onclick="toggleWish(this)">
+      <div class="wish-check"></div>
+      <span class="wish-emoji">🎮</span>
+      <span class="wish-label">เล่นเกมด้วยกัน</span>
+    </div>
+    <div class="wish-item" onclick="toggleWish(this)">
+      <div class="wish-check"></div>
+      <span class="wish-emoji">💅</span>
+      <span class="wish-label">หาอะไรใหม่ๆ ทำด้วยกัน</span>
+    </div>
+    <div class="wish-item" onclick="toggleWish(this)">
+      <div class="wish-check"></div>
+      <span class="wish-emoji">🛹</span>
+      <span class="wish-label">ไปทำกิจกรรมต่างๆ ด้วยกัน</span>
+    </div>
+    <div class="wish-item" onclick="toggleWish(this)">
+      <div class="wish-check"></div>
+      <span class="wish-emoji">🌿</span>
+      <span class="wish-label">ไปต่างจังหวัดด้วยกัน</span>
+    </div>
+    <div class="wish-item" onclick="toggleWish(this)">
+      <div class="wish-check"></div>
+      <span class="wish-emoji">💛</span>
+      <span class="wish-label">มีน้องในชีวิตไปอีกนานๆ</span>
+    </div>
+  </div>
+</section>
+
+<!-- LETTER -->
+<section id="letter">
+  <p class="section-label">05 — จดหมาย</p>
+  <h2 class="section-title" style="color:var(--cream)">จากใจ ถึงน้อง</h2>
+  <div class="divider"></div>
+  <div class="envelope-wrapper">
+    <div class="envelope">
+      <div class="wax-seal">🎞️</div>
+      <p class="letter-salutation">น้อง,</p>
+      <p class="letter-body">ต่อจากนี้อัดจะปรับตัวให้ดีขึ้นนะ อะไรที่ทำแล้วน้องชอบก็จะรักษาไว้ อะไรที่เราไม่ถูกกันก็จะพยายามแก้ให้มันดีขึ้น
+
+อัดอยากรักษาน้องเอาไว้ในชีวิต ไม่อยากให้คำว่า "เลิก" โผล่ขึ้นมาตอนมีปัญหา อยากให้มันเป็นทางเลือกสุดท้ายจริงๆ
+
+รู้ว่าน้องกำลังจะยุ่งและเหนื่อยกับช่วงชีวิตนี้มาก แต่สัญญาว่าจะเคารพเวลาของน้อง เคารพชีวิตของน้อง และจะอยู่ข้างๆ ในช่วงเวลาสำคัญแบบนี้
+
+ขอโทษและขอบคุณสำหรับเดือนนี้นะ
+
+รักมากๆ เลย 🤎</p>
+      <p class="letter-sign">— อัด</p>
+    </div>
+  </div>
+</section>
+
+</section>
+
+<!-- PROPOSE -->
+<section id="propose" style="background: var(--brown-dark); min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 5rem 2rem; text-align: center; position: relative; overflow: hidden;">
+  <!-- soft glow -->
+  <div style="position:absolute; width:400px; height:400px; background:radial-gradient(circle, rgba(193,127,62,0.15) 0%, transparent 70%); top:50%; left:50%; transform:translate(-50%,-50%); pointer-events:none;"></div>
+
+  <p class="section-label" style="color: var(--brown-light); opacity:0; animation: fadeUp 0.8s ease forwards 0.2s;">และสุดท้าย...</p>
+
+  <h2 style="font-family:'Playfair Display',serif; font-style:italic; font-size:clamp(2rem,7vw,4rem); color:var(--cream); line-height:1.2; margin: 1rem 0 2rem; opacity:0; animation: fadeUp 0.9s ease forwards 0.5s;">
+    ขอเป็นแฟนน้อง<br><em style="color:var(--amber);">อีกครั้ง</em>ได้ไหม?
+  </h2>
+
+  <p style="font-family:'Sriracha',cursive; font-size:1rem; color:var(--brown-light); max-width:440px; line-height:2; margin-bottom:3rem; opacity:0; animation: fadeUp 0.9s ease forwards 0.8s;">
+    อย่าเพิ่งเบื่อกันไปไหนนะ 🤎
+  </p>
+
+  <div class="propose-btns" style="opacity:0; animation: fadeUp 0.9s ease forwards 1.1s;">
+    <button class="yes-btn" onclick="handleYes()">ได้เลย 🤎</button>
+    <button class="no-btn" id="no-btn" onmouseover="runAway(this)" ontouchstart="runAway(this)">ยังไม่แน่ใจ</button>
+  </div>
+
+  <p id="propose-result" style="font-family:'Playfair Display',serif; font-style:italic; font-size:1.4rem; color:var(--amber); margin-top:2rem; min-height:2rem; opacity:0; transition: opacity 0.5s ease;"></p>
+</section>
+
+<footer>
+  <p>🎞️ &nbsp; 2 months &nbsp; · &nbsp; ยังมีอีกหลายเดือนข้างหน้า &nbsp; 🤎</p>
+</footer>
+
+<script>
+  // propose
+  function handleYes() {
+    const result = document.getElementById('propose-result');
+    result.textContent = 'ขอบคุณนะ รักมากๆ เลย 🤎';
+    result.style.opacity = '1';
+    document.querySelector('.propose-btns').style.display = 'none';
+  }
+
+  function runAway(btn) {
+    const section = document.getElementById('propose');
+    const rect = section.getBoundingClientRect();
+    const bRect = btn.getBoundingClientRect();
+    const maxX = rect.width - bRect.width - 40;
+    const maxY = rect.height - bRect.height - 40;
+    const randX = Math.floor(Math.random() * maxX) - maxX / 2;
+    const randY = Math.floor(Math.random() * 200) - 100;
+    btn.style.transform = `translate(${randX}px, ${randY}px)`;
+    btn.style.transition = 'transform 0.3s ease';
+  }
+
+  // password
+  function checkPw() {
+    const input = document.getElementById('pw-input');
+    const errEl = document.getElementById('pw-error');
+    if (input.value === '200107') {
+      document.getElementById('password-screen').classList.add('hidden');
+      document.body.style.overflow = '';
+    } else {
+      input.classList.add('error');
+      errEl.classList.add('show');
+      input.value = '';
+      setTimeout(() => input.classList.remove('error'), 500);
+    }
+  }
+
+  // lock scroll until unlocked
+  document.body.style.overflow = 'hidden';
+
+  // smooth scroll
+  function scrollTo(id) {
+    document.querySelector(id).scrollIntoView({ behavior: 'smooth' });
+  }
+
+  // nav dot highlight
+  const sections = ['#hero','#love','#sorry','#memories','#future','#letter'];
+  const dots = document.querySelectorAll('.nav-dot');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const idx = sections.indexOf('#' + entry.target.id);
+        dots.forEach(d => d.classList.remove('active'));
+        if (idx >= 0) dots[idx].classList.add('active');
+      }
+    });
+  }, { threshold: 0.4 });
+
+  sections.forEach(s => {
+    const el = document.querySelector(s);
+    if (el) observer.observe(el);
+  });
+
+  // reveal on scroll
+  const revealObs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('.polaroid, .sorry-letter, .sorry-item, .memory-card, .wish-item, .envelope, .stat-card').forEach(el => {
+    revealObs.observe(el);
+  });
+
+  // stagger sorry items
+  document.querySelectorAll('.sorry-item').forEach((el, i) => {
+    el.style.transitionDelay = `${0.1 + i * 0.12}s`;
+  });
+
+  document.querySelectorAll('.wish-item').forEach((el, i) => {
+    el.style.transitionDelay = `${i * 0.08}s`;
+  });
+
+  document.querySelectorAll('.memory-card').forEach((el, i) => {
+    el.style.transitionDelay = `${i * 0.1}s`;
+  });
+
+  // wishlist toggle
+  function toggleWish(el) {
+    el.classList.toggle('checked');
+    const check = el.querySelector('.wish-check');
+    check.textContent = el.classList.contains('checked') ? '✓' : '';
+  }
+</script>
+</body>
+</html>
